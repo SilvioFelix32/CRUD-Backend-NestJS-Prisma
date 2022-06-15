@@ -1,5 +1,4 @@
 import { ApiHideProperty } from '@nestjs/swagger';
-import { Type } from 'class-transformer';
 import {
   IsBoolean,
   IsDate,
@@ -8,44 +7,48 @@ import {
   IsString,
   IsUUID,
 } from 'class-validator';
-import { Role, Sex, User } from '../entities/user.entity';
+import { Role, Sex } from '../entities/user.entity';
 
-export class CreateUserDto extends User {
-  @IsUUID()
+export class FindUserDto {
   @IsString()
+  @IsOptional()
+  @IsUUID()
   userId?: string;
 
-  @IsUUID()
   @IsString()
+  @IsOptional()
+  @IsUUID()
   company_id: string;
 
   @IsString()
-  document: string;
+  @IsOptional()
+  document?: string | null;
 
   @IsString()
+  @IsOptional()
   name: string;
 
   @IsString()
+  @IsOptional()
   last_name: string;
 
-  @Type(() => Date)
+  @IsString()
+  @IsOptional()
+  sex_type?: Sex;
+
   @IsDate()
+  @IsString()
   @IsOptional()
   birth_date?: Date;
-
-  @IsOptional()
-  @IsString()
-  sex?: Sex;
-
-  @IsEmail()
-  email: string;
 
   @IsString()
   @IsOptional()
   celphone?: string | null;
 
+  @IsEmail()
   @IsString()
   @IsOptional()
+  email: string;
   cep?: string | null;
 
   @IsString()
@@ -76,14 +79,14 @@ export class CreateUserDto extends User {
   @IsOptional()
   active?: boolean | null;
 
-  @IsString()
+  @ApiHideProperty()
   role: Role;
 
-  @IsString()
-  password: string;
+  @ApiHideProperty()
+  password?: string;
 
-  @IsString()
-  user_name: string;
+  @ApiHideProperty()
+  user_name?: string | null;
 
   @ApiHideProperty()
   created_at?: Date | string;

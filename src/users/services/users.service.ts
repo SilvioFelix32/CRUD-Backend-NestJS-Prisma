@@ -7,6 +7,7 @@ import { Prisma, User } from '@prisma/client';
 import { CompaniesService } from 'src/companies/services/companies.service';
 import { PrismaService } from 'src/shared/prisma/prisma.service';
 import { CreateUserDto } from '../dto/create-user.dto';
+import { FindUserDto } from '../dto/query-user.dto';
 import { UpdateUserDto } from '../dto/update-user.dto';
 
 @Injectable()
@@ -77,23 +78,29 @@ export class UsersService {
     }
   }
 
-  async findOne(userId: string): Promise<User | null> {
-    return this.prisma.user.findUnique({
-      where: { userId },
-    });
-  }
-
-  async findAll(): Promise<User[]> {
-    return this.prisma.user.findMany();
-  }
-
   async create(dto: CreateUserDto): Promise<User> {
+    await Promise.all([this.validateCreateLocalUser(dto)]);
+    
     const data: Prisma.UserCreateInput = {
       ...dto,
     };
 
     return this.prisma.user.create({
       data,
+    });
+  }
+
+  async findOne(userId: string): Promise<User> {
+    return this.prisma.user.findUnique({
+      where: { userId },
+    });
+  }
+
+  async findAll(dto: FindUserDto): Promise<User[]> {
+    return this.prisma.user.findMany({
+      where: {
+        ...dto,
+      },
     });
   }
 
@@ -112,16 +119,6 @@ export class UsersService {
   }
 
   async remove(userId: string): Promise<User> {
-    const deleteUser = await this.findOne(userId);
-
-    if (!deleteUser) {
-      throw new NotFoundException('User not found');
-    }
-
-    const company = await this.companiesService.findOne(deleteUser.company_id);
-    if (deleteUser.company_id !== company.id) {
-      throw new BadRequestException('Invalid User');
-    }
     return this.prisma.user.delete({
       where: { userId },
     });

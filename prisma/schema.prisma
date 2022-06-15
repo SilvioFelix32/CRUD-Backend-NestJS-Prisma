@@ -72,7 +72,7 @@ model User {
   document           String?   @unique
   name               String
   last_name          String
-  user_name          String    @unique
+  user_name          String    
   password           String
   sex_type           Sex?      @default(OTHERS)
   birth_date         DateTime?
@@ -87,20 +87,9 @@ model User {
   address_complement String?
   role               Role      @default(USER)
   active             Boolean?  @default(true)
-  Post               Post[]
 
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 
   @@map("users")
-}
-
-model Post {
-  id        String   @id @default(uuid()) @map("_id")
-  createdAt DateTime @default(now())
-  published Boolean? @default(false)
-  author    User?    @relation(fields: [authorId], references: [userId])
-  authorId  String?
-
-  @@map("posts")
 }
