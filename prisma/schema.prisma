@@ -1,0 +1,106 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model Company {
+  id            String  @id @default(uuid()) @map("_id")
+  name          String  @unique
+  fantasy_name  String?
+  cnpj          String? @unique
+  celphone1     String
+  celphone2     String?
+  email         String  @unique
+  url_banner    String?
+  url_site      String?
+  url_facebook  String?
+  url_instagram String?
+  url_linkedin  String?
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  company_params CompanyParams[]
+  users          User[]
+
+  @@map("company")
+}
+
+enum Environment {
+  PRODUCTION
+  HOMOLOGATION
+
+  @@map("environment")
+}
+
+model CompanyParams {
+  id             String       @id @default(uuid()) @map("_id")
+  company        Company      @relation(fields: [company_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  company_id     String       @unique
+  environment    Environment? @default(value: HOMOLOGATION)
+  obs_email      String?
+  obs_voucher    String?
+  privacy_policy String?
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  @@map("company_params")
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum Sex {
+  MALE
+  FEMALE
+  OTHERS
+
+  @@map("sex")
+}
+
+model User {
+  userId             String    @id @default(uuid()) @map("_id")
+  company            Company?  @relation(fields: [company_id], references: [id], onDelete: SetNull, onUpdate: Cascade)
+  company_id         String
+  document           String?   @unique
+  name               String
+  last_name          String
+  user_name          String    @unique
+  password           String
+  sex_type           Sex?      @default(OTHERS)
+  birth_date         DateTime?
+  celphone           String?
+  email              String    @unique
+  cep                String?
+  state              String?
+  city               String?
+  neighborhood       String?
+  address            String?
+  address_number     String?
+  address_complement String?
+  role               Role      @default(USER)
+  active             Boolean?  @default(true)
+  Post               Post[]
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  @@map("users")
+}
+
+model Post {
+  id        String   @id @default(uuid()) @map("_id")
+  createdAt DateTime @default(now())
+  published Boolean? @default(false)
+  author    User?    @relation(fields: [authorId], references: [userId])
+  authorId  String?
+
+  @@map("posts")
+}
