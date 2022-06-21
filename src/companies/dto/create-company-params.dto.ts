@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import { Environment, CompanyParams } from '../entities/company-params.entity';
 import { IsOptional, IsString } from 'class-validator';
 

@@ -9,6 +9,7 @@ import { PrismaService } from 'src/shared/prisma/prisma.service';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { FindUserDto } from '../dto/query-user.dto';
 import { UpdateUserDto } from '../dto/update-user.dto';
+import { userResponse } from '../dto/user-response.dto';
 
 @Injectable()
 export class UsersService {
@@ -17,8 +18,15 @@ export class UsersService {
     private readonly companiesService: CompaniesService,
   ) {}
 
-  private async validateCreateLocalUser(data: CreateUserDto) {
+  private async validateCreateLocalUser(
+    company_id: string,
+    data: CreateUserDto,
+  ) {
     const { email, document } = data;
+
+    if (!company_id) {
+      throw new BadRequestException('User needs a company ID');
+    }
 
     const userEmail = await this.prisma.user.findUnique({
       where: { email },
@@ -78,44 +86,74 @@ export class UsersService {
     }
   }
 
-  async create(dto: CreateUserDto): Promise<User> {
-    await Promise.all([this.validateCreateLocalUser(dto)]);
-    
+  async create(company_id: string, dto: CreateUserDto): Promise<User> {
+    await Promise.all([this.validateCreateLocalUser(company_id, dto)]);
+
     const data: Prisma.UserCreateInput = {
+      company_id,
       ...dto,
     };
 
-    return this.prisma.user.create({
+    console.log({ data });
+    this.prisma.user.create({
       data,
     });
+
+    return;
   }
 
-  async findOne(userId: string): Promise<User> {
-    return this.prisma.user.findUnique({
+  async findOne(userId: string): Promise<User | unknown> {
+    const user = this.prisma.user.findUnique({
       where: { userId },
+      select: {
+        ...userResponse,
+      },
     });
+
+    if (!user) {
+      throw new BadRequestException('User not Found');
+    }
+
+    return user;
   }
 
-  async findAll(dto: FindUserDto): Promise<User[]> {
+  async findAll(
+    company_id: string,
+    dto: FindUserDto,
+  ): Promise<User[] | unknown> {
+    const company = this.prisma.company.findUnique({
+      where: { id: company_id },
+    });
+
+    if (!company) {
+      throw new NotFoundException('Company not found');
+    }
+
     return this.prisma.user.findMany({
       where: {
+        company_id,
         ...dto,
+      },
+      select: {
+        ...userResponse,
       },
     });
   }
 
   async update(userId: string, dto: UpdateUserDto): Promise<User> {
     const updateUser = await this.findOne(userId);
-    await Promise.all([this.validateUpdateLocalUser(dto, updateUser)]);
+    await Promise.all([this.validateUpdateLocalUser(dto, updateUser as User)]);
 
     const data: Prisma.UserUpdateInput = {
       ...dto,
     };
 
-    return this.prisma.user.update({
+    this.prisma.user.update({
       where: { userId },
       data,
     });
+
+    return;
   }
 
   async remove(userId: string): Promise<User> {

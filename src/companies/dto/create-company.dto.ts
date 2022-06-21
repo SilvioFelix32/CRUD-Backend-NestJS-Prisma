@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import { Company } from '../entities/company.entity';
 import {
   IsEmail,
@@ -13,7 +12,8 @@ import { Type } from 'class-transformer';
 export class CreateCompanyDto extends Company {
   @IsUUID()
   @IsString()
-  id: string;
+  @IsOptional()
+  id?: string;
 
   @IsString()
   name: string;

@@ -1,5 +1,5 @@
-/* eslint-disable prettier/prettier */
 import {
+  BadRequestException,
   HttpException,
   HttpStatus,
   Injectable,
@@ -14,17 +14,36 @@ import { Company } from '../entities/company.entity';
 export class CompaniesService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async create(data: CreateCompanyDto) {
-    const { cnpj } = data;
-    const findCompanyCnpj = await this.prisma.company.findUnique({
+  private async validateCreation(data: CreateCompanyDto) {
+    const { name, cnpj, email } = data;
+
+    const comanyEmail = await this.prisma.company.findUnique({
+      where: { email },
+    });
+
+    if (comanyEmail) {
+      throw new BadRequestException('Company with email already informed');
+    }
+
+    const companyCnpj = await this.prisma.company.findUnique({
       where: { cnpj },
     });
-    if (findCompanyCnpj) {
-      throw new HttpException(
-        'CNPJ already exists in the database',
-        HttpStatus.BAD_REQUEST,
-      );
+
+    if (companyCnpj) {
+      throw new BadRequestException('Company with CNPJ already informed');
     }
+
+    const companyName = await this.prisma.company.findUnique({
+      where: { name },
+    });
+
+    if (companyName) {
+      throw new BadRequestException('Company with name already informed');
+    }
+  }
+
+  async create(data: CreateCompanyDto) {
+    await Promise.all([this.validateCreation(data)]);
 
     return await this.prisma.company.create({ data });
   }
@@ -33,9 +52,9 @@ export class CompaniesService {
     return this.prisma.company.findMany();
   }
 
-  async findOne(id: string) {
+  async findOne(company_id: string): Promise<Company> {
     const company = this.prisma.company.findUnique({
-      where: { id },
+      where: { id: company_id },
     });
 
     if (!company) {
@@ -45,7 +64,7 @@ export class CompaniesService {
     return company;
   }
 
-  async update(id: string, data: UpdateCompanyDto) {
+  async update(company_id: string, data: UpdateCompanyDto) {
     const { cnpj } = data;
 
     if (cnpj) {
@@ -53,7 +72,7 @@ export class CompaniesService {
         where: { cnpj },
       });
 
-      if (findCompanyCnpj && findCompanyCnpj.id !== id) {
+      if (findCompanyCnpj && findCompanyCnpj.id !== company_id) {
         throw new HttpException(
           'CNPJ already exists in the database',
           HttpStatus.BAD_REQUEST,
@@ -61,15 +80,17 @@ export class CompaniesService {
       }
     }
 
-    const findCompanyUpdate = await this.findOne(id);
+    const findCompanyUpdate = await this.findOne(company_id);
+    
     if (!findCompanyUpdate) {
       throw new HttpException('Company not found', HttpStatus.BAD_REQUEST);
     }
 
-    return this.prisma.company.update({ where: { id }, data });
+    return this.prisma.company.update({ where: { id: company_id }, data });
   }
 
   remove(id: string) {
-    return this.prisma.company.delete({ where: { id } });
+    this.prisma.company.delete({ where: { id } });
+    return;
   }
 }

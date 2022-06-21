@@ -1,9 +1,11 @@
-/* eslint-disable prettier/prettier */
+import { ApiHideProperty } from '@nestjs/swagger';
+
 export type Sex = 'MALE' | 'FEMALE' | 'OTHERS';
 export type Role = 'USER' | 'ADMIN';
-
 export class User {
   userId?: string;
+
+  @ApiHideProperty()
   company_id: string;
   document?: string | null;
   name: string;
@@ -19,11 +21,17 @@ export class User {
   address?: string | null;
   address_number?: string | null;
   address_complement?: string | null;
+  @ApiHideProperty()
   active?: boolean | null;
+  @ApiHideProperty()
   role: Role;
+  @ApiHideProperty()
   user_name?: string | null;
+  @ApiHideProperty()
   password: string;
 
+  @ApiHideProperty()
   created_at?: Date | string;
+  @ApiHideProperty()
   updated_at?: Date | string;
 }

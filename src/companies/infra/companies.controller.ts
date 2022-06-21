@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import {
   Controller,
   Get,
@@ -26,6 +25,11 @@ export class CompaniesController {
     return await this.companiesService.findAll();
   }
 
+  @Get(':id')
+  async findOne(@Param('id') company_id: string) {
+    return await this.companiesService.findOne(company_id);
+  }
+
   @Patch(':id')
   async update(@Param('id') id: string, @Body() data: UpdateCompanyDto) {
     return await this.companiesService.update(id, data);
@@ -33,6 +37,8 @@ export class CompaniesController {
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.companiesService.remove(id);
+    this.companiesService.remove(id);
+    
+    return;
   }
 }

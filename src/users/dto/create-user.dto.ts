@@ -1,4 +1,4 @@
-import { ApiHideProperty } from '@nestjs/swagger';
+import { ApiHideProperty, ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import {
   IsBoolean,
@@ -13,10 +13,13 @@ import { Role, Sex, User } from '../entities/user.entity';
 export class CreateUserDto extends User {
   @IsUUID()
   @IsString()
+  @IsOptional()
+  @ApiProperty()
   userId?: string;
 
   @IsUUID()
   @IsString()
+  @IsOptional()
   company_id: string;
 
   @IsString()
@@ -77,17 +80,25 @@ export class CreateUserDto extends User {
   active?: boolean | null;
 
   @IsString()
+  @ApiProperty()
+  @ApiHideProperty()
   role: Role;
 
   @IsString()
+  @ApiProperty()
+  @ApiHideProperty()
   password: string;
 
   @IsString()
+  @ApiProperty()
+  @ApiHideProperty()
   user_name: string;
 
+  @ApiProperty()
   @ApiHideProperty()
   created_at?: Date | string;
 
+  @ApiProperty()
   @ApiHideProperty()
   updated_at?: Date | string;
 }

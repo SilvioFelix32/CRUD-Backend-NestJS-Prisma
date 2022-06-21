@@ -1,14 +1,5 @@
-import { ApiHideProperty } from '@nestjs/swagger';
-import {
-  IsBoolean,
-  IsDate,
-  IsEmail,
-  IsOptional,
-  IsString,
-  IsUUID,
-} from 'class-validator';
-import { Role, Sex } from '../entities/user.entity';
-
+import { IsDate, IsEmail, IsOptional, IsString, IsUUID } from 'class-validator';
+import { Sex } from '../entities/user.entity';
 export class FindUserDto {
   @IsString()
   @IsOptional()
@@ -74,23 +65,4 @@ export class FindUserDto {
   @IsString()
   @IsOptional()
   address_complement?: string | null;
-
-  @IsBoolean()
-  @IsOptional()
-  active?: boolean | null;
-
-  @ApiHideProperty()
-  role: Role;
-
-  @ApiHideProperty()
-  password?: string;
-
-  @ApiHideProperty()
-  user_name?: string | null;
-
-  @ApiHideProperty()
-  created_at?: Date | string;
-
-  @ApiHideProperty()
-  updated_at?: Date | string;
 }

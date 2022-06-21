@@ -1,9 +1,6 @@
-/* eslint-disable prettier/prettier */
-
 import { CompanyParams } from './company-params.entity';
-
 export class Company {
-  id: string;
+  id?: string;
   name: string;
   fantasy_name?: string;
   celphone1: string;

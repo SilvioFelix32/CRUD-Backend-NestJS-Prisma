@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 export type Environment = 'PRODUCTION' | 'HOMOLOGATION';
 
 export class CompanyParams {
