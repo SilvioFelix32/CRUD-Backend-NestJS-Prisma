@@ -4,6 +4,7 @@ import {
   IsBoolean,
   IsDate,
   IsEmail,
+  IsNotEmpty,
   IsOptional,
   IsString,
   IsUUID,
@@ -23,6 +24,7 @@ export class CreateUserDto extends User {
   company_id: string;
 
   @IsString()
+  @IsNotEmpty()
   document: string;
 
   @IsString()
@@ -41,6 +43,7 @@ export class CreateUserDto extends User {
   sex?: Sex;
 
   @IsEmail()
+  @IsNotEmpty()
   email: string;
 
   @IsString()

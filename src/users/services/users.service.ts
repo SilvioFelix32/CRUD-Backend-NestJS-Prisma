@@ -28,78 +28,107 @@ export class UsersService {
       throw new BadRequestException('User needs a company ID');
     }
 
-    const userEmail = await this.prisma.user.findUnique({
-      where: { email },
+    const validateUserEmail = await this.prisma.company.findMany({
+      where: {
+        id: company_id,
+        users: {
+          some: {
+            email,
+          },
+        },
+      },
     });
 
-    if (userEmail) {
-      throw new BadRequestException('User with email already informed');
+    if (validateUserEmail.length > 0) {
+      throw new BadRequestException(
+        'User with email already informed in this company',
+      );
     }
-
-    const userDocument = await this.prisma.user.findUnique({
-      where: { document },
+    const validateUserDocument = await this.prisma.company.findMany({
+      where: {
+        id: company_id,
+        users: {
+          some: {
+            document,
+          },
+        },
+      },
     });
 
-    if (userDocument) {
-      throw new BadRequestException('User with document already informed');
+    if (validateUserDocument.length > 0) {
+      throw new BadRequestException(
+        'User with document already informed in this company',
+      );
     }
   }
 
-  private async validateUpdateLocalUser(data: UpdateUserDto, updateUser: User) {
+  private async validateUpdateLocalUser(
+    company_id: string,
+    data: UpdateUserDto,
+    updateUser: User,
+  ) {
     if (!updateUser) {
       throw new NotFoundException('User not found');
     }
 
-    const company = await this.companiesService.findOne(data.company_id);
+    const company = await this.companiesService.findOne(company_id);
 
-    if (updateUser.company_id !== company.id) {
-      throw new BadRequestException('Invalid User');
+    if (!company) {
+      throw new NotFoundException('Company not found');
     }
 
     const { email, document } = data;
-    if (email === null) {
-      throw new BadRequestException('Invalid email');
-    }
-
-    if (document === null) {
-      throw new BadRequestException('Invalid document');
-    }
 
     if (email) {
-      const userEmail = await this.prisma.user.findUnique({
-        where: { email },
+      const validateUserEmail = await this.prisma.company.findMany({
+        where: {
+          id: company_id,
+          users: {
+            some: {
+              email,
+            },
+          },
+        },
       });
 
-      if (userEmail && userEmail.userId !== updateUser.userId) {
-        throw new BadRequestException('User with email already informed');
+      if (validateUserEmail.length > 0) {
+        throw new BadRequestException(
+          'User with email already informed in this company',
+        );
       }
     }
 
     if (document) {
-      const userDocument = await this.prisma.user.findUnique({
-        where: { document },
+      const validateUserDocument = await this.prisma.company.findMany({
+        where: {
+          id: company_id,
+          users: {
+            some: {
+              document,
+            },
+          },
+        },
       });
 
-      if (userDocument && userDocument.userId !== updateUser.userId) {
-        throw new BadRequestException('User with document already informed');
+      if (validateUserDocument.length > 0) {
+        throw new BadRequestException(
+          'User with document already informed in this company',
+        );
       }
     }
   }
 
   async create(company_id: string, dto: CreateUserDto): Promise<User> {
-    await Promise.all([this.validateCreateLocalUser(company_id, dto)]);
+    await this.validateCreateLocalUser(company_id, dto);
 
     const data: Prisma.UserCreateInput = {
       company_id,
       ...dto,
     };
 
-    console.log({ data });
-    this.prisma.user.create({
+    return this.prisma.user.create({
       data,
     });
-
-    return;
   }
 
   async findOne(userId: string): Promise<User | unknown> {
@@ -140,20 +169,20 @@ export class UsersService {
     });
   }
 
-  async update(userId: string, dto: UpdateUserDto): Promise<User> {
+  async update(
+    company_id: string,
+    userId: string,
+    dto: UpdateUserDto,
+  ): Promise<User> {
     const updateUser = await this.findOne(userId);
-    await Promise.all([this.validateUpdateLocalUser(dto, updateUser as User)]);
+    await this.validateUpdateLocalUser(company_id, dto, updateUser as User);
 
-    const data: Prisma.UserUpdateInput = {
-      ...dto,
-    };
-
-    this.prisma.user.update({
+    return this.prisma.user.update({
       where: { userId },
-      data,
+      data: {
+        ...dto,
+      },
     });
-
-    return;
   }
 
   async remove(userId: string): Promise<User> {

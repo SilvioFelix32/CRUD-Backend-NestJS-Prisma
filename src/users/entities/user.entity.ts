@@ -7,7 +7,7 @@ export class User {
 
   @ApiHideProperty()
   company_id: string;
-  document?: string | null;
+  document: string;
   name: string;
   last_name: string;
   sex_type?: Sex;

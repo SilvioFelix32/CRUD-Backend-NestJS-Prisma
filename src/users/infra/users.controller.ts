@@ -35,6 +35,10 @@ export class UsersController {
   ) {
     const { company_id } = header;
 
+    if (!company_id) {
+      throw new BadRequestException('No Company informed');
+    }
+
     return this.usersService.create(company_id, createUserDto);
   }
 
@@ -47,8 +51,6 @@ export class UsersController {
       throw new BadRequestException('No Company informed');
     }
 
-    console.log(company_id);
-
     return this.usersService.findAll(company_id, param);
   }
 
@@ -60,8 +62,18 @@ export class UsersController {
 
   @Patch(':id')
   @ApiResponse({ status: 200, type: User })
-  update(@Param('id') userId: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.usersService.update(userId, updateUserDto);
+  update(
+    @RequestHeaders() header: IHeaders,
+    @Param('id') userId: string,
+    @Body() updateUserDto: UpdateUserDto,
+  ) {
+    const { company_id } = header;
+
+    if (!company_id) {
+      throw new BadRequestException('No Company informed');
+    }
+
+    return this.usersService.update(company_id, userId, updateUserDto);
   }
 
   @Delete(':id')

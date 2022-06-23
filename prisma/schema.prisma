@@ -69,15 +69,15 @@ model User {
   userId             String    @id @default(uuid()) @map("_id")
   company            Company?  @relation(fields: [company_id], references: [id], onDelete: SetNull, onUpdate: Cascade)
   company_id         String
-  document           String?   @unique
+  document           String
   name               String
   last_name          String
-  user_name          String    
+  user_name          String
   password           String
   sex_type           Sex?      @default(OTHERS)
   birth_date         DateTime?
   celphone           String?
-  email              String    @unique
+  email              String
   cep                String?
   state              String?
   city               String?
