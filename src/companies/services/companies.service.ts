@@ -81,7 +81,7 @@ export class CompaniesService {
     }
 
     const findCompanyUpdate = await this.findOne(company_id);
-    
+
     if (!findCompanyUpdate) {
       throw new HttpException('Company not found', HttpStatus.BAD_REQUEST);
     }
@@ -89,8 +89,7 @@ export class CompaniesService {
     return this.prisma.company.update({ where: { id: company_id }, data });
   }
 
-  remove(id: string) {
-    this.prisma.company.delete({ where: { id } });
-    return;
+  async remove(company_id: string) {
+    return this.prisma.company.delete({ where: { id: company_id } });
   }
 }

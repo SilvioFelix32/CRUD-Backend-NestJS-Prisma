@@ -6,11 +6,14 @@ export class CreateCompanyParamsDto extends CompanyParams {
   environment: Environment;
 
   @IsOptional()
+  @IsString()
   obs_email?: string | null;
 
   @IsOptional()
+  @IsString()
   obs_voucher?: string | null;
 
   @IsOptional()
+  @IsString()
   privacy_policy?: string;
 }
