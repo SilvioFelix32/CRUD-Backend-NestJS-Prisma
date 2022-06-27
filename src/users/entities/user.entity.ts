@@ -1,7 +1,15 @@
 import { ApiHideProperty } from '@nestjs/swagger';
 
-export type Sex = 'MALE' | 'FEMALE' | 'OTHERS';
-export type Role = 'USER' | 'ADMIN';
+export enum Sex {
+  MALE = 'MALE',
+  FEMALE = 'FEMALE',
+  OTHERS = 'OTHERS',
+}
+
+export enum Role {
+  USER = 'USER',
+  ADMIN = 'ADMIN',
+}
 export class User {
   userId?: string;
 

@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import { Test, TestingModule } from '@nestjs/testing';
 import { CompaniesService } from '../services/companies.service';
 import { CompaniesController } from './companies.controller';

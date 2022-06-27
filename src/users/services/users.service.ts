@@ -118,7 +118,10 @@ export class UsersService {
     }
   }
 
-  async create(company_id: string, dto: CreateUserDto): Promise<User> {
+  async create(
+    company_id: string,
+    dto: CreateUserDto,
+  ): Promise<User | unknown> {
     await this.validateCreateLocalUser(company_id, dto);
 
     const data: Prisma.UserCreateInput = {
