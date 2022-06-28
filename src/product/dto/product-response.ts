@@ -1,8 +1,6 @@
 export const productReponse = {
-  productId: true,
-  product_category: true,
-  product_category_id: true,
-  company: true,
+  product_id: true,
+  category_id: true,
   company_id: true,
   product_type: true,
   sku: true,

@@ -20,11 +20,14 @@ export class ProductService {
 
   async create(
     company_id: string,
+    category_id: string,
     dto: CreateProductDto,
   ): Promise<Product | unknown> {
     await this.validateProduct(company_id);
 
     const data: Prisma.ProductCreateInput = {
+      company_id,
+      category_id,
       ...dto,
     };
 
@@ -48,10 +51,10 @@ export class ProductService {
     });
   }
 
-  findOne(productId: string): Promise<Product | unknown> {
+  findOne(product_id: string): Promise<Product | unknown> {
     return this.prisma.product.findUnique({
       where: {
-        productId,
+        product_id,
       },
       select: {
         ...productReponse,
@@ -59,10 +62,13 @@ export class ProductService {
     });
   }
 
-  update(productId: string, dto: UpdateProductDto): Promise<Product | unknown> {
+  update(
+    product_id: string,
+    dto: UpdateProductDto,
+  ): Promise<Product | unknown> {
     return this.prisma.product.update({
       where: {
-        productId,
+        product_id,
       },
       data: {
         ...dto,
@@ -70,10 +76,10 @@ export class ProductService {
     });
   }
 
-  remove(productId: string): Promise<Product | unknown> {
+  remove(product_id: string): Promise<Product | unknown> {
     return this.prisma.product.delete({
       where: {
-        productId,
+        product_id,
       },
     });
   }

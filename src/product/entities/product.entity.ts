@@ -1,12 +1,8 @@
-import { Company } from '@prisma/client';
-import { ProductCategory } from 'src/product-categories/entities/product-category.entity';
 import { ProductType } from './product-type.entity';
 
 export class Product {
-  productId: string;
-  product_category: ProductCategory;
-  product_category_id: string;
-  company: Company;
+  product_id: string;
+  category_id: string;
   company_id: string;
   product_type: ProductType;
   sku: string;

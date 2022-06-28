@@ -1,6 +1,7 @@
 import {
   IsBoolean,
   IsDate,
+  IsEnum,
   IsNotEmpty,
   IsOptional,
   IsString,
@@ -12,13 +13,15 @@ export class CreateProductCategoryDto {
   @IsString()
   @IsUUID()
   @IsOptional()
-  categoryId?: string;
+  category_id?: string;
 
   @IsString()
   @IsUUID()
   @IsOptional()
-  company_id: string;
+  company_id?: string;
 
+  @IsEnum(ProductType)
+  @IsNotEmpty()
   product_type: ProductType;
 
   @IsString()
@@ -40,8 +43,6 @@ export class CreateProductCategoryDto {
   @IsBoolean()
   @IsOptional()
   active?: boolean;
-
-  products?: any;
 
   @IsString()
   @IsOptional()

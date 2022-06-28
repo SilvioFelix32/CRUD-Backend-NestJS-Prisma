@@ -19,16 +19,23 @@ import { ProductService } from '../services/product.service';
 export class ProductController {
   constructor(private readonly productService: ProductService) {}
 
-  @Post()
-  create(@RequestHeaders() header: IHeaders, @Body() dto: CreateProductDto) {
+  @Post(':category_id')
+  create(
+    @RequestHeaders() header: IHeaders,
+    @Param('category_id') category_id: string,
+    @Body() dto: CreateProductDto,
+  ) {
     const { company_id } = header;
-    console.log(company_id);
 
     if (!company_id) {
       throw new BadRequestException('No Company informed');
     }
 
-    return this.productService.create(company_id, dto);
+    if (!category_id) {
+      throw new BadRequestException('Product needs a Category');
+    }
+
+    return this.productService.create(company_id, category_id, dto);
   }
 
   @Get()
@@ -43,14 +50,14 @@ export class ProductController {
   }
 
   @Get(':id')
-  findOne(@Param('id') productId: string) {
-    return this.productService.findOne(productId);
+  findOne(@Param('id') product_id: string) {
+    return this.productService.findOne(product_id);
   }
 
   @Patch(':id')
   update(
     @RequestHeaders() header: IHeaders,
-    @Param('id') productId: string,
+    @Param('id') product_id: string,
     @Body() dto: UpdateProductDto,
   ) {
     const { company_id } = header;
@@ -58,11 +65,11 @@ export class ProductController {
     if (!company_id) {
       throw new BadRequestException('No Company informed');
     }
-    return this.productService.update(productId, dto);
+    return this.productService.update(product_id, dto);
   }
 
   @Delete(':id')
-  remove(@Param('id') productId: string) {
-    return this.productService.remove(productId);
+  remove(@Param('id') product_id: string) {
+    return this.productService.remove(product_id);
   }
 }

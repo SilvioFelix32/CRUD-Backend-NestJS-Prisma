@@ -8,9 +8,6 @@ import {
 import { ProductType } from '../entities/product-type.entity';
 
 export class UpdateProductDto {
-  product_category?: any;
-  company?: any;
-
   @IsString()
   @IsOptional()
   product_type?: ProductType;

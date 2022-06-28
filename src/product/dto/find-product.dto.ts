@@ -4,23 +4,29 @@ import {
   IsNumber,
   IsOptional,
   IsString,
+  IsUUID,
 } from 'class-validator';
 import { ProductCategory } from 'src/product-categories/entities/product-category.entity';
 import { ProductType } from '../entities/product-type.entity';
 
 export class FindProductDto {
   @IsString()
+  @IsUUID()
   @IsOptional()
-  id?: string;
+  product_id?: string;
 
   @IsString()
   @IsOptional()
   product_category?: ProductCategory;
 
-  product_category_id?: string;
+  @IsString()
+  @IsUUID()
+  @IsOptional()
+  category_id?: string;
 
-  company?: any;
-
+  @IsString()
+  @IsUUID()
+  @IsOptional()
   company_id?: string;
 
   @IsString()

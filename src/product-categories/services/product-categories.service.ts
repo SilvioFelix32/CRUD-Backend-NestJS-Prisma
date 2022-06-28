@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
@@ -31,6 +32,12 @@ export class ProductCategoriesService {
   ): Promise<ProductCategory | unknown> {
     await this.validateProduct(company_id);
 
+    const { product_type } = dto;
+
+    if (!product_type) {
+      throw new BadRequestException('No product type informed');
+    }
+
     const data: Prisma.ProductCategoryCreateInput = {
       company_id,
       ...dto,
@@ -54,10 +61,10 @@ export class ProductCategoriesService {
     });
   }
 
-  async findOne(categoryId: string): Promise<ProductCategory | unknown> {
+  async findOne(category_id: string): Promise<ProductCategory | unknown> {
     return this.prisma.productCategory.findUnique({
       where: {
-        categoryId,
+        category_id,
       },
       select: {
         ...productCategoryReponse,
@@ -66,12 +73,12 @@ export class ProductCategoriesService {
   }
 
   async update(
-    categoryId: string,
+    category_id: string,
     dto: UpdateProductCategoryDto,
   ): Promise<ProductCategory | unknown> {
     return this.prisma.productCategory.update({
       where: {
-        categoryId,
+        category_id,
       },
       data: {
         ...dto,
@@ -79,10 +86,10 @@ export class ProductCategoriesService {
     });
   }
 
-  remove(categoryId: string): Promise<ProductCategory | unknown> {
+  remove(category_id: string): Promise<ProductCategory | unknown> {
     return this.prisma.productCategory.delete({
       where: {
-        categoryId,
+        category_id,
       },
     });
   }

@@ -46,14 +46,14 @@ export class ProductCategoriesController {
   }
 
   @Get(':id')
-  findOne(@Param('id') categoryId: string) {
-    return this.productCategoriesService.findOne(categoryId);
+  findOne(@Param('id') category_id: string) {
+    return this.productCategoriesService.findOne(category_id);
   }
 
   @Patch(':id')
   update(
     @RequestHeaders() header: IHeaders,
-    @Param('id') categoryId: string,
+    @Param('id') category_id: string,
     @Body() dto: UpdateProductCategoryDto,
   ) {
     const { company_id } = header;
@@ -62,11 +62,11 @@ export class ProductCategoriesController {
       throw new BadRequestException('No Company informed');
     }
 
-    return this.productCategoriesService.update(categoryId, dto);
+    return this.productCategoriesService.update(category_id, dto);
   }
 
   @Delete(':id')
-  remove(@Param('id') categoryId: string) {
-    return this.productCategoriesService.remove(categoryId);
+  remove(@Param('id') category_id: string) {
+    return this.productCategoriesService.remove(category_id);
   }
 }

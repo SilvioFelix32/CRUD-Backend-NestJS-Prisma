@@ -13,11 +13,11 @@ export class CreateProductDto {
   @IsUUID()
   @IsString()
   @IsOptional()
-  productId?: string;
+  product_id?: string;
 
   @IsString()
   @IsOptional()
-  product_category_id: string;
+  category_id: string;
 
   @IsUUID()
   @IsString()
@@ -25,8 +25,8 @@ export class CreateProductDto {
   company_id: string;
 
   @IsString()
-  @IsOptional()
-  product_type?: ProductType;
+  @IsNotEmpty()
+  product_type: ProductType;
 
   @IsString()
   @IsNotEmpty()

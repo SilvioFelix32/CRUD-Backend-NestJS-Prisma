@@ -1,8 +1,7 @@
 import { ProductType } from 'src/product/entities/product-type.entity';
 
 export class ProductCategory {
-  categoryId?: string;
-  company?: any;
+  category_id?: string;
   company_id?: string;
   product_type?: ProductType;
   config_type_id?: string | null;
