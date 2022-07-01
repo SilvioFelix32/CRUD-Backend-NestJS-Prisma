@@ -29,7 +29,6 @@ model Company {
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 
-
   @@map("company")
 }
 
@@ -152,8 +151,41 @@ model Product {
   for_sale         Boolean?        @default(true)
   discount         Boolean?        @default(false)
 
+  items        ProductCombo[]      @relation("Combo")
+  product_item ProductCombo[]      @relation("Item")
+  total_sales  ProductTotalSales[]
+
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 
   @@map("product")
+}
+
+model ProductCombo {
+  combo_id   String  @id @default(uuid()) @map("_id")
+  product    Product @relation(name: "Combo", fields: [product_id], references: [product_id], onDelete: Cascade, onUpdate: Cascade)
+  product_id String
+  item       Product @relation(name: "Item", fields: [item_id], references: [product_id], onDelete: Cascade, onUpdate: Cascade)
+  item_id    String
+  amount     Int
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  @@unique([product_id, item_id])
+  @@map("product_combo")
+}
+
+model ProductTotalSales {
+  sale_total_id String   @id @default(uuid()) @map("_id")
+  product       Product  @relation(fields: [product_id], references: [product_id], onDelete: Cascade, onUpdate: Cascade)
+  product_id    String
+  date          DateTime
+  amount        Int
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  @@unique([product_id, date])
+  @@map("product_total_sales")
 }

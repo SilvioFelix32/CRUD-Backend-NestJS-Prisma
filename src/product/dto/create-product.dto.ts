@@ -1,3 +1,4 @@
+import { Type } from 'class-transformer';
 import {
   IsBoolean,
   IsDate,
@@ -6,8 +7,11 @@ import {
   IsOptional,
   IsString,
   IsUUID,
+  ValidateNested,
 } from 'class-validator';
+import { ProductTotalSales } from '../entities/product-total-sales.entity';
 import { ProductType } from '../entities/product-type.entity';
+import { CreateProductItemDto } from './create-product-item.dto';
 
 export class CreateProductDto {
   @IsUUID()
@@ -79,6 +83,16 @@ export class CreateProductDto {
   @IsBoolean()
   @IsOptional()
   discount?: boolean | null;
+
+  @IsOptional()
+  @ValidateNested({ each: true })
+  @Type(() => CreateProductItemDto)
+  items?: CreateProductItemDto[];
+
+  @IsOptional()
+  @ValidateNested({ each: true })
+  @Type(() => CreateProductItemDto)
+  total_sales: ProductTotalSales[];
 
   @IsString()
   @IsDate()
