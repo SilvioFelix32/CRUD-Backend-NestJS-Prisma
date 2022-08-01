@@ -8,17 +8,19 @@ import { UpdateProductPriceDto } from '../dto/update-product-item-price.dto';
 import { ProductItemPrice } from '../entities/product-price-items.entity';
 
 @Injectable()
-export class ProductPriceItemService {
+export class ProductTablePricesService {
   constructor(private readonly prisma: PrismaService) {}
 
   create(
-    item_price_id: string,
+    price_table_id: string,
     dto: CreateProductItemPriceDto,
   ): Promise<ProductItemPrice> {
     const data: Prisma.ProductPricesTableCreateInput = {
-      item_price_id,
+      price_table_id,
       ...dto,
     };
+
+    console.log("DADOS",data);
 
     return this.prisma.productPricesTable.create({ data });
   }

@@ -1,10 +1,4 @@
-import {
-  IsUUID,
-  IsOptional,
-  IsString,
-  IsNumber,
-  IsDate,
-} from 'class-validator';
+import { IsOptional, IsString, IsNumber, IsDate } from 'class-validator';
 
 export class UpdateProductPriceDto {
   @IsOptional()

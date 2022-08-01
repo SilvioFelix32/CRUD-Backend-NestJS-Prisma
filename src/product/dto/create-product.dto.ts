@@ -9,7 +9,7 @@ import {
   IsUUID,
   ValidateNested,
 } from 'class-validator';
-import { ProductPriceTable } from 'src/product-prices/entities/product-price.entity';
+import { ProductPriceTable } from 'src/product-table/entities/product-price.entity';
 import { ProductTotalSales } from '../entities/product-total-sales.entity';
 import { ProductType } from '../entities/product-type.entity';
 import { CreateProductItemDto } from './create-product-item.dto';

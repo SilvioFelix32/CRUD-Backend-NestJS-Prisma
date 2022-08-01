@@ -6,17 +6,19 @@ import {
   IsUUID,
   ValidateNested,
 } from 'class-validator';
-import { ProductItemPrice } from '../entities/product-price-items.entity';
+import { ProductItemPrice } from '../../product-table-prices/entities/product-price-items.entity';
 import { ProductPriceTable } from '../entities/product-price.entity';
 
 export class CreateProductTablePriceDto extends ProductPriceTable {
   @IsUUID()
   @IsString()
-  price_table_id: string;
+  @IsOptional()
+  price_table_id?: string;
 
   @IsUUID()
   @IsString()
-  company_id: string;
+  @IsOptional()
+  company_id?: string;
 
   @IsString()
   description: string;
@@ -34,7 +36,7 @@ export class CreateProductTablePriceDto extends ProductPriceTable {
   @IsArray()
   @IsOptional()
   @ValidateNested({ each: true })
-  products: any | ProductItemPrice[];
+  products?: any | ProductItemPrice[];
 
   @IsDate()
   @IsString()

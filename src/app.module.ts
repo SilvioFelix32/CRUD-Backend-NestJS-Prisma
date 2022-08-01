@@ -7,7 +7,8 @@ import { UsersModule } from './users/users.module';
 import { CompaniesModule } from './companies/companies.module';
 import { ProductModule } from './product/modules/product.module';
 import { ProductCategoriesModule } from './product-categories/modules/product-categories.module';
-import { ProductPricesModule } from './product-prices/modules/product-prices.module';
+import { ProductPricesModule } from './product-table/modules/product-prices.module';
+import { ProductTablePricesModule } from './product-table-prices/modules/product-table-prices.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { ProductPricesModule } from './product-prices/modules/product-prices.mod
     ProductModule,
     ProductCategoriesModule,
     ProductPricesModule,
+    ProductTablePricesModule,
   ],
   controllers: [AppController],
   providers: [AppService, PrismaService],
