@@ -25,6 +25,7 @@ model Company {
   users              User[]
   products           Product[]
   product_categories ProductCategory[]
+  price_tables       PriceTable[]
 
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
@@ -114,7 +115,7 @@ enum ProductType {
 
 model ProductCategory {
   category_id    String      @id @default(uuid()) @map("_id")
-  company        Company     @relation(fields: [company_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  company        Company?    @relation(fields: [company_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
   company_id     String
   product_type   ProductType
   config_type_id String?
@@ -131,29 +132,30 @@ model ProductCategory {
 }
 
 model Product {
-  product_id       String          @id @default(uuid()) @map("_id")
-  product_category ProductCategory @relation(fields: [category_id], references: [category_id], onDelete: Cascade, onUpdate: Cascade)
+  product_id       String           @id @default(uuid()) @map("_id")
+  product_category ProductCategory? @relation(fields: [category_id], references: [category_id], onDelete: Cascade, onUpdate: Cascade)
   category_id      String
-  company          Company         @relation(fields: [company_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  company          Company?         @relation(fields: [company_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
   company_id       String
-  product_type     ProductType     @default(OTHERS)
+  product_type     ProductType      @default(OTHERS)
   sku              String
   title            String
   subtitle         String?
   description      String?
   url_banner       String?
-  active           Boolean         @default(true)
-  combo            Boolean?        @default(false)
-  amount_min_sale  Int?            @default(1)
-  amount_max_sale  Int?            @default(5)
-  highlighted      Boolean?        @default(false)
-  order_on_menu    Int?            @default(0)
-  for_sale         Boolean?        @default(true)
-  discount         Boolean?        @default(false)
+  active           Boolean          @default(true)
+  combo            Boolean?         @default(false)
+  amount_min_sale  Int?             @default(1)
+  amount_max_sale  Int?             @default(5)
+  highlighted      Boolean?         @default(false)
+  order_on_menu    Int?             @default(0)
+  for_sale         Boolean?         @default(true)
+  discount         Boolean?         @default(false)
 
-  items        ProductCombo[]      @relation("Combo")
-  product_item ProductCombo[]      @relation("Item")
+  items        ProductCombo[]       @relation("Combo")
+  product_item ProductCombo[]       @relation("Item")
   total_sales  ProductTotalSales[]
+  price_table  ProductPricesTable[]
 
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
@@ -188,4 +190,35 @@ model ProductTotalSales {
 
   @@unique([product_id, date])
   @@map("product_total_sales")
+}
+
+model PriceTable {
+  price_table_id String    @id @default(uuid()) @map("_id")
+  company        Company?  @relation(fields: [company_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  company_id     String
+  description    String
+  initial_date   DateTime? @default(now())
+  final_date     DateTime?
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  products ProductPricesTable[]
+
+  @@map("price_table")
+}
+
+model ProductPricesTable {
+  item_price_id  String      @id @default(uuid()) @map("_id")
+  price_table    PriceTable? @relation(fields: [price_table_id], references: [price_table_id], onDelete: Cascade, onUpdate: Cascade)
+  price_table_id String
+  product        Product?    @relation(fields: [product_id], references: [product_id], onDelete: Cascade, onUpdate: Cascade)
+  product_id     String
+  value          Float
+  descount_value Float
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  @@map("product_price_table")
 }

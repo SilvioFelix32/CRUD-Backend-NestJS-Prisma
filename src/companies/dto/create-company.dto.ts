@@ -1,6 +1,8 @@
 import { Company } from '../entities/company.entity';
 import {
+  IsDate,
   IsEmail,
+  IsNotEmpty,
   IsOptional,
   IsString,
   IsUUID,
@@ -16,9 +18,11 @@ export class CreateCompanyDto extends Company {
   id?: string;
 
   @IsString()
+  @IsNotEmpty()
   name: string;
 
   @IsString()
+  @IsNotEmpty()
   cnpj: string;
 
   @IsOptional()
@@ -60,7 +64,13 @@ export class CreateCompanyDto extends Company {
   @Type(() => CreateCompanyParamsDto)
   company_params?: CreateCompanyParamsDto;
 
+  @IsOptional()
+  @IsString()
+  @IsDate()
   created_at?: string | Date;
 
+  @IsOptional()
+  @IsString()
+  @IsDate()
   updated_at?: string | Date;
 }

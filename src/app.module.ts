@@ -7,6 +7,7 @@ import { UsersModule } from './users/users.module';
 import { CompaniesModule } from './companies/companies.module';
 import { ProductModule } from './product/modules/product.module';
 import { ProductCategoriesModule } from './product-categories/modules/product-categories.module';
+import { ProductPricesModule } from './product-prices/modules/product-prices.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { ProductCategoriesModule } from './product-categories/modules/product-ca
     UsersModule,
     ProductModule,
     ProductCategoriesModule,
+    ProductPricesModule,
   ],
   controllers: [AppController],
   providers: [AppService, PrismaService],

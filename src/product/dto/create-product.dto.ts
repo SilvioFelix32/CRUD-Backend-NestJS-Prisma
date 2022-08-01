@@ -9,6 +9,7 @@ import {
   IsUUID,
   ValidateNested,
 } from 'class-validator';
+import { ProductPriceTable } from 'src/product-prices/entities/product-price.entity';
 import { ProductTotalSales } from '../entities/product-total-sales.entity';
 import { ProductType } from '../entities/product-type.entity';
 import { CreateProductItemDto } from './create-product-item.dto';
@@ -87,12 +88,17 @@ export class CreateProductDto {
   @IsOptional()
   @ValidateNested({ each: true })
   @Type(() => CreateProductItemDto)
-  items?: CreateProductItemDto[];
+  items?: any | CreateProductItemDto[];
 
   @IsOptional()
   @ValidateNested({ each: true })
   @Type(() => CreateProductItemDto)
-  total_sales: ProductTotalSales[];
+  total_sales?: any | ProductTotalSales[];
+
+  @IsOptional()
+  @ValidateNested({ each: true })
+  @Type(() => CreateProductItemDto)
+  price_table?: any | ProductPriceTable[];
 
   @IsString()
   @IsDate()

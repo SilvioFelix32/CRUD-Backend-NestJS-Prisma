@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import { Module } from '@nestjs/common';
 import { PrismaService } from 'src/shared/prisma/prisma.service';
 import { CompaniesController } from './infra/companies.controller';
