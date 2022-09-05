@@ -23,7 +23,6 @@ export class ProductTablePricesController {
     @Body() dto: CreateProductItemPriceDto,
   ) {
     const { price_table_id } = header;
-    console.log(price_table_id);
 
     return this.service.create(price_table_id, dto);
   }

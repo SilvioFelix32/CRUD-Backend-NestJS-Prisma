@@ -27,7 +27,7 @@ export class CreateProductDto {
   @IsUUID()
   @IsString()
   @IsOptional()
-  company_id: string;
+  company_id?: string;
 
   @IsString()
   @IsNotEmpty()

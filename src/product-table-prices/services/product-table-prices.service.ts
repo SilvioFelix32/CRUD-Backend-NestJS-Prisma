@@ -20,8 +20,6 @@ export class ProductTablePricesService {
       ...dto,
     };
 
-    console.log("DADOS",data);
-
     return this.prisma.productPricesTable.create({ data });
   }
 
