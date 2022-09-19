@@ -1,11 +1,5 @@
 import { Type } from 'class-transformer';
-import {
-  IsUUID,
-  IsString,
-  IsOptional,
-  IsEmail,
-  ValidateNested,
-} from 'class-validator';
+import { IsString, IsOptional, IsEmail, ValidateNested } from 'class-validator';
 import { CreateCompanyParamsDto } from './create-company-params.dto';
 
 export class UpdateCompanyDto {

@@ -26,10 +26,10 @@ model Company {
   products           Product[]
   product_categories ProductCategory[]
   price_tables       PriceTable[]
+  sale               Sale[]
 
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
-  Sale       Sale[]
 
   @@map("company")
 }
@@ -89,8 +89,8 @@ model User {
   address            String?
   address_number     String?
   address_complement String?
-  role               Role      @default(USER)
   active             Boolean?  @default(true)
+  role               Role      @default(USER)
   shop_cart          Sale[]
 
   created_at DateTime @default(now())

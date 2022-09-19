@@ -1,6 +1,6 @@
 export const userResponse = {
   company_id: true,
-  userId: true,
+  user_id: true,
   document: true,
   name: true,
   last_name: true,

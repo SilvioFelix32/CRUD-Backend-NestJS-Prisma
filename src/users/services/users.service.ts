@@ -134,9 +134,9 @@ export class UsersService {
     });
   }
 
-  async findOne(userId: string): Promise<User | unknown> {
+  async findOne(user_id: string): Promise<User | unknown> {
     const user = this.prisma.user.findUnique({
-      where: { userId },
+      where: { user_id },
       select: {
         ...userResponse,
       },
@@ -174,23 +174,23 @@ export class UsersService {
 
   async update(
     company_id: string,
-    userId: string,
+    user_id: string,
     dto: UpdateUserDto,
   ): Promise<User> {
-    const updateUser = await this.findOne(userId);
+    const updateUser = await this.findOne(user_id);
     await this.validateUpdateLocalUser(company_id, dto, updateUser as User);
 
     return this.prisma.user.update({
-      where: { userId },
+      where: { user_id },
       data: {
         ...dto,
       },
     });
   }
 
-  async remove(userId: string): Promise<User> {
+  async remove(user_id: string): Promise<User> {
     return this.prisma.user.delete({
-      where: { userId },
+      where: { user_id },
     });
   }
 }

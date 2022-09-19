@@ -4,7 +4,7 @@ export class FindUserDto {
   @IsString()
   @IsOptional()
   @IsUUID()
-  userId?: string;
+  user_id?: string;
 
   @IsString()
   @IsOptional()

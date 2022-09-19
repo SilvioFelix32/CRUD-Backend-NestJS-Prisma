@@ -11,7 +11,7 @@ export enum Role {
   ADMIN = 'ADMIN',
 }
 export class User {
-  userId?: string;
+  user_id?: string;
 
   @ApiHideProperty()
   company_id: string;

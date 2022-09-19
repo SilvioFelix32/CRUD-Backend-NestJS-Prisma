@@ -16,7 +16,7 @@ export class CreateUserDto extends User {
   @IsString()
   @IsOptional()
   @ApiProperty()
-  userId?: string;
+  user_id?: string;
 
   @IsUUID()
   @IsString()

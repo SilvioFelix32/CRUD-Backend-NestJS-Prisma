@@ -56,15 +56,15 @@ export class UsersController {
 
   @Get(':id')
   @ApiResponse({ status: 200, type: User })
-  findOne(@Param('id') userId: string) {
-    return this.usersService.findOne(userId);
+  findOne(@Param('id') user_id: string) {
+    return this.usersService.findOne(user_id);
   }
 
   @Patch(':id')
   @ApiResponse({ status: 200, type: User })
   update(
     @RequestHeaders() header: IHeaders,
-    @Param('id') userId: string,
+    @Param('id') user_id: string,
     @Body() updateUserDto: UpdateUserDto,
   ) {
     const { company_id } = header;
@@ -73,12 +73,12 @@ export class UsersController {
       throw new BadRequestException('No Company informed');
     }
 
-    return this.usersService.update(company_id, userId, updateUserDto);
+    return this.usersService.update(company_id, user_id, updateUserDto);
   }
 
   @Delete(':id')
   @ApiResponse({ status: 200, type: User })
-  remove(@Param('id') userId: string) {
-    return this.usersService.remove(userId);
+  remove(@Param('id') user_id: string) {
+    return this.usersService.remove(user_id);
   }
 }
